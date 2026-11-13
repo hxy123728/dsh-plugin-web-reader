@@ -1,1 +1,28 @@
-# placeholder, replaced by the real tree
+# 依赖与产物
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# 本地产物
+_out/
+_out_small/
+_models/
+.hf/
+_browsers/
+_tmp/
+*.log
+
+# 凭据与个人数据（绝对不要提交）
+cookies.json
+settings.json
+monitors.json
+*.cookies.txt
+.env
+.env.*
+
+# 编辑器/系统
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

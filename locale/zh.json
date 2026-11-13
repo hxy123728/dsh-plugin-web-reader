@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "网页读取 / Web Reader",
+    "description": "把任意网址读成 Markdown：文章正文、亚马逊商品信息、B 站视频元数据与字幕。为 Agent 注册 web_read 工具，纯 Node 实现，不需要 Python。"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "dsh-plugin-web-reader",
+  "version": "1.8.1",
+  "description": "把网址读成文字：网页正文 / 商品信息 / 视频元数据与字幕，给 Agent 提供 web_read 工具，纯 Node 零依赖，可离线安装到任意 DSH profile。",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./cli": "./bin/webread.mjs",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./client": "./client.js",
+    "./panel": "./panel.js"
+  },
+  "bin": {
+    "webread": "./bin/webread.mjs"
+  },
+  "icon": "./icon.svg",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  },
+  "files": [
+    "index.js",
+    "bin/",
+    "lib/",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "README.zh.md",
+    "install.ps1",
+    "install.sh",
+    "docs/",
+    "test/",
+    "client.js",
+    "panel.js",
+    "bin/extract_video.py"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "web",
+    "reader",
+    "scrape",
+    "markdown"
+  ],
+  "license": "MIT"
+}

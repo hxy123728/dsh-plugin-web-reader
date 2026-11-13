@@ -1,0 +1,24 @@
+# web-reader —— 把"读网址"注册成 Agent 工具
+# 安装后每个会话都能直接调用 web_read(url)，不需要再手动跑脚本。
+- insert:
+    - id: web-reader
+      name: dsh-plugin-web-reader
+      config:
+        defaultMaxChars: 20000
+        # 亚马逊商品页默认切到美国站（美元价格 / 美区库存与配送）
+        amazonRegion: us
+        amazonZip: '10001'
+        # 同一主机两次请求的最小间隔（毫秒），防软限流
+        minIntervalMs: 1200
+        # 进程内缓存：同一 URL 在这个时间内复用，不再发请求
+        cacheTtlMs: 300000
+        cacheMax: 50
+        # 视频抽帧/转写（可选）：指向装了 yt-dlp + imageio-ffmpeg + faster-whisper 的 Python
+        # 换机器时改这一行；留空则用 PATH 里的 python
+        pythonPath: ''  # 指向装了 yt-dlp + faster-whisper 的 python；留空则用 PATH 里的 python
+        videoModel: small
+        videoLang: zh
+
+    # 面板接口 + 监控定时器：只依赖 webServer，缺它也不影响上面的工具
+    - id: web-reader-panel
+      name: dsh-plugin-web-reader/panel

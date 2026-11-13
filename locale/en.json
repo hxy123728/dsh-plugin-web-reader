@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Web Reader",
+    "description": "Turn any URL into Markdown: article body, Amazon product facts, Bilibili video metadata and subtitles. Registers a web_read tool for the agent; pure Node, no Python required."
+  }
+}

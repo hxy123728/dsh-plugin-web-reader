@@ -1,0 +1,43 @@
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -3012,2 +3012,40 @@
+     }),
+   )
++  // ===== 本地改造（fork patch）：把渲染能力暴露成 cordis 服务 =====
++  // 上游 apply() 只注册工具，不导出任何接口，别的插件无法复用它的 Chrome。
++  // 这里注册一个 'websift' 服务，disposer 交回 cordis，插件卸载时自动摘除。
++  const service = {
++    version: '1.0.8-svc.1',
++    /** 用真 Chrome 打开页面取内容：{ ok, url, title, text, route, seconds } */
++    renderPage: async (url, options = {}) => {
++      const live = resolveSettings(config)
++      const r = await run(live, {
++        url,
++        action: options.action || 'text',
++        max_chars: options.maxChars || 8000,
++        wait_ms: options.waitMs,
++        proxy: options.proxy,
++        js: options.js,
++      })
++      const text = (r && r.text) || ''
++      return {
++        ok: typeof text === 'string' && text.trim().length > 0,
++        url: (r && r.url) || url,
++        title: (r && r.title) || '',
++        text,
++        route: (r && r.route) || 'unknown',
++        seconds: (r && r.seconds) || 0,
++      }
++    },
++    /** 真实搜索结果（原 web_find 的底层） */
++    search: async (query, options = {}) => {
++      const live = resolveSettings(config)
++      return runFind(live, { query, limit: options.limit, proxy: options.proxy || live.proxyMode })
++    },
++    settings: () => resolveSettings(config),
++  }
++  const disposeService = ctx.provide('websift', service)
++  return [disposeService]
++}
++
++/** 仅供离线基准测试使用（不对外承诺 API 稳定性）。 */
