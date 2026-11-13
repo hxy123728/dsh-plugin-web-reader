@@ -19,8 +19,13 @@ turn any URL into Markdown — plus optional **account cookies**, **scheduled mo
 ## Install
 
 ```bash
+# straight from this repo
+dsh plugin --profile web add github:hxy123728/dsh-plugin-web-reader
+
+# or from a local checkout
 dsh plugin --profile web add link:/absolute/path/to/dsh-plugin-web-reader
-# or from a release tarball
+
+# or a release tarball
 dsh plugin --profile web add file:./dsh-plugin-web-reader-1.8.1.tgz
 ```
 

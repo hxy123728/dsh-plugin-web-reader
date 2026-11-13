@@ -75,3 +75,34 @@ node test/monitors.mjs
 - **Topics**：`dsh`、`dsh-plugin`、`deepseek-harness`、`web-scraper`、`cookie-manager`
 - **Release**：把 `dsh-plugin-web-reader-1.8.1.zip` 作为附件挂上去，README 里给下载链接
 - **README 顶部**：加一句"需要 DSH 0.2.x"，以及一张面板截图（你截图给我也行，我可以写进 README）
+
+---
+
+## 本机实测：为什么用 API 而不是 git push（2026-11-13）
+
+| 端点 | 结果 |
+|---|---|
+| `github.com` GET | 时通时不通 |
+| `github.com/login/oauth/access_token`（POST） | **超时** → 设备码登录无法完成 |
+| `github.com/.../git-receive-pack`（git push） | **连接失败** |
+| `api.github.com` | **稳定（0.8–1.8s）** |
+
+所以 `gh auth login --web` 和 `git push` 在这台机器上都不可用。
+
+**可行方式**：`publish-api.mjs`（Git Data API：blob → tree → commit → ref），只需要 classic PAT 的 `repo` scope。
+
+```powershell
+node publish-api.mjs --dir .\dsh-plugin-web-reader --repo dsh-plugin-web-reader
+```
+
+注意：空仓库首次使用 Git Data API 会报 `409 Git Repository is empty`，脚本已先用 Contents API 造初始提交。
+
+本机两处修复（与环境有关，不是通用步骤）：
+
+```powershell
+# 1) DNS 污染：hosts 固定 github.com / api.github.com 到可用 IP
+#    备份：C:\Windows\System32\drivers\etc\hosts.bak-trashcatcher
+
+# 2) TLS 吊销检查被墙（CRYPT_E_NO_REVOCATION_CHECK），导致所有 HTTPS 握手失败
+git config --global http.schannelCheckRevoke false
+```
